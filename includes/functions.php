@@ -3,7 +3,7 @@
   define('DB_SERVER','localhost');
   define('DB_USERNAME','root');
   define('DB_PASSWORD','');
-  define('DB_NAME','gym');
+  define('DB_NAME','tfgms');
 
   $errors = array();
   $errorSuccess = array();
