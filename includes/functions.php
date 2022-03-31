@@ -22,10 +22,20 @@
     }
 
 
-    function signIn($email, $password) {
-      $result = mysqli_query($this->dbh, "SELECT * FROM tbl_users WHERE Email = '$email' AND Password = '$password'");
+    function signIn($username, $password) {
+      $result = mysqli_query($this->dbh, "SELECT * FROM tbl_users WHERE Username = '$username' AND Password = '$password'");
       return $result;
     }
+    
+    function register($firstName, $lastName, $address, $mobileNumber, $sex, $age, $exerciseType, $username, $password) {
+      $result = mysqli_query($this->dbh, "INSERT INTO tbl_users (first_name, last_name, address, mobile_number, sex, age, exercise_type, username, password, Date_registered, Is_activated) VALUES ('$firstName','$lastName','$address','$mobileNumber','$sex','$age','$exerciseType','$username','$password','0000-00-00','No')");
+      return $result;
+    }
+
+    function addMember($name, $email) {
+      $result = mysqli_query($this->dbh, "INSERT INTO tbl_users (name, email) VALUES ('$name', '$email')");
+    }
+    
 
   }
 
