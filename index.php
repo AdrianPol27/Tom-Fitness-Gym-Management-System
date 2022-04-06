@@ -14,8 +14,9 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav ms-auto">
-            <a class="nav-link me-3 active" href="index.php">Home</a>
-            <a class="nav-link" href="login.php">Login</a>
+            <a class="nav-link active" href="index.php">Home</a>
+            <a class="nav-link mx-3" href="login.php">Login</a>
+            <a class="nav-link" href="register.php">Register</a>
           </div>
         </div>
       </div>

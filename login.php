@@ -5,28 +5,33 @@
   $errors = array();
 
   if (isset($_POST['login_btn'])) { // Kung ang login button tuplokon
-    $email = $_POST['email']; // Kuhaon ang email gikan sa form
+    $username = $_POST['username']; // Kuhaon ang email gikan sa form
     $password = $_POST['password']; // Kuhaon ang password gikan sa form
-    if (empty($email)) {
-      array_push($errors, "Email should not be empty!"); // Mag push og error kung empty ang email
+    if (empty($username)) {
+      array_push($errors, "Username should not be empty!"); // Mag push og error kung empty ang email
     }
     if (empty($password)) {
       array_push($errors, "Password should not be empty!"); // Mag push og error kung empty ang password
     } else {
-      $signIn = $functions->signIn($email, $password); // i excecute ang function nga naa sa functions.php daw i select tanan ang email og password sulod sa users table
+      $signIn = $functions->signIn($username, $password); // i excecute ang function nga naa sa functions.php daw i select tanan ang email og password sulod sa users table
       if ($signIn -> num_rows > 0) { // kung ang username og password wala sa table 
         while ($account = $signIn -> fetch_assoc()) {
-          if ($account['Email'] == $email && $account['Password'] == $password) {
+          if ($account['Username'] == $username && $account['Password'] == $password) {
+
+             // Redirect kung user
+             if ($account['User_type_ID'] == '0') {
+              if ($account['Is_activated'] == 'No') {
+                array_push($errors, "Your account has not been activated by the admin!");
+              } else {
+                header('Location: ./user/index.php');
+              }
+            }
 
             // Redirect kung admin
             if ($account['User_type_ID'] == '1') {
               header('Location: ./admin/index.php');
             }
-
-            // Redirect kung user
-            if ($account['User_type_ID'] == '2') {
-              header('Location: ./user/index.php');
-            }
+           
           }
         }
       } else {
@@ -62,8 +67,9 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav ms-auto">
-            <a class="nav-link me-3" href="index.php">Home</a>
-            <a class="nav-link active" href="login.php">Login</a>
+            <a class="nav-link" href="index.php">Home</a>
+            <a class="nav-link active mx-3" href="login.php">Login</a>
+            <a class="nav-link" href="register.php">Register</a>
           </div>
         </div>
       </div>
@@ -76,11 +82,11 @@
         <div class="mx-5">
           <!-- <img class="img-fluid" src="./assets/img/cmu_logo.png" alt="CMU Logo"> -->
         </div>
-        <h1 class="h3 my-4 fw-normal text-center">Please sign in</h1>
+        <h1 class="h3 my-4 fw-normal text-center">Login</h1>
         <?php include('./includes/errors.php'); ?>
         <div class="form-floating mb-1">
-          <input type="email" class="form-control" id="email" name="email" placeholder="Email">
-          <label for="email">Email</label>
+          <input type="text" class="form-control" id="username" name="username" placeholder="Email">
+          <label for="username">Username</label>
         </div>
         <div class="form-floating">
           <input type="password" class="form-control" id="password" name="password" placeholder="Password">
