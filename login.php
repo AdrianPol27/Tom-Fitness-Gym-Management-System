@@ -31,7 +31,6 @@
             if ($account['User_type_ID'] == '1') {
               header('Location: ./admin/index.php');
             }
-
            
           }
         }

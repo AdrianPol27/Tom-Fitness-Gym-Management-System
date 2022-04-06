@@ -3,19 +3,22 @@
 	include_once(".././includes/functions.php"); // Include functions.php
 	$functions = new Functions(); // Create function object
 	$errors = array();
+	$errorSuccess = array();
 
-	if (isset($_POST['add_member_btn'])) { // Kung ang add member button tuplokon
-    $name = $_POST['name']; // Kuhaon ang name gikan sa form
-    $email = $_POST['email']; // Kuhaon ang email gikan sa form
-    if (empty($name)) {
-      array_push($errors, "Name should not be empty!"); // Mag push og error kung empty ang name
-    }
-    if (empty($email)) {
-      array_push($errors, "Email should not be empty!"); // Mag push og error kung empty ang email
-    } else {
-			$addMember = $functions->addMember($name, $email);
+	if (isset($_POST['activate_btn'])) { // Kung ang add member button tuplokon
+		$userId = $_POST['user_id'];
+		$dateActivated = date("Y-m-d");
+
+		$activateMember = $functions->activateMember($userId, $dateActivated);
+
+		if ($activateMember) {
+			array_push($errorSuccess, "Account has been activated successfully!");
+		} else {
+			array_push($errors, "There was an error in activating account!");
 		}
+
 	}
+
 
 ?>
 <!doctype html>
@@ -69,57 +72,58 @@
 					<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 						<h1>Members</h1>
 					</div>
-					<a href="javascript:void()" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addMemberModal">Add New Member</a>
           <?php include('.././includes/errors.php'); ?>
-					<table id="myTable">
-						<thead>
-							<th>ID</th>
-							<th>Name</th>
-							<th>Email</th>
-							<th>Date Registered</th>
-						</thead>
-						<tbody>
-							<?php
-								$cnt = 1;
-							?>
-							<tr>
-								<td><?= $cnt ?></td>
-								<td>Name</td>
-								<td>Email</td>
-								<td>Date Registered</td>
-							</tr>
-						</tbody>
-						<?php $cnt = $cnt + 1;?>
-					</table>
-				</main>
-			</div>
-		</div>
+					<form action="members.php" method="post">
+						<table id="myTable">
+							<thead class="text-center">
+								<th>ID</th>
+								<th>Name</th>
+								<th>Address</th>
+								<th>Mobile Number</th>
+								<th>Sex</th>
+								<th>Age</th>
+								<th>Exercise Type</th>
+								<th>Date Activated</th>
+								<th>Activation</th>
+							</thead>
+							<tbody class="text-center">
+								<?php
+									$cnt = 1;
+									$fetchMembers = $functions->fetchMembers();
+									while($row = mysqli_fetch_array($fetchMembers)) {
+								?>
+								<tr>
+									<td><?= $cnt ?></td>
+									<td><?= $row['First_name'] . ' ' . $row['Last_name'] ?></td>
+									<td><?= $row['Address'] ?></td>
+									<td><?= $row['Mobile_number'] ?></td>
+									<td><?= $row['Sex'] ?></td>
+									<td><?= $row['Age']?></td>
+									<td><?= $row['Exercise_type'] ?></td>
+									<td><?= $row['Date_activated'] ?></td>
+									<td>
+										<?php 
+											if ($row['Status'] == '0') {
+												echo '<button type="submit" class="btn btn-primary btn-sm w-100" name="activate_btn">Activate</button>';
+											} 
+											if ($row['Status'] == '1') {
+												echo '<p class="text-success m-0">Activated</p>';
+											}
+											if ($row['Status'] == '2') {
+												echo '<p class="text-danger m-0">Expired</p>';
+											}
+										?>
+									</td>
+								</tr>
+							</tbody>
 
-		<!-- Add member modal -->
-		<div class="modal fade" id="addMemberModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">Add New Member</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-					</div>
-					<div class="modal-body">
-						<form action="members.php" method="post">
-							<div class="form-floating mb-2">
-								<input type="text" class="form-control" id="name" name="name" placeholder="Name">
-								<label for="name">Name</label>
-							</div>
-							<div class="form-floating">
-								<input type="email" class="form-control" id="email" name="email" placeholder="Email">
-								<label for="email">Email</label>
-							</div>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-						<button type="submit" class="btn btn-primary" name="add_member_btn">Add Member</button>
-					</div>
-						</form>
-				</div>
+							<!-- Hidden Input -->
+							<input type="hidden" name="user_id" value="<?= $row['User_ID'] ?>">
+
+							<?php $cnt = $cnt + 1; }?>
+						</table>
+					</form>
+				</main>
 			</div>
 		</div>
 
