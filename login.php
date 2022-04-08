@@ -20,7 +20,7 @@
 
              // Redirect kung user
              if ($account['User_type_ID'] == '0') {
-              if ($account['Is_activated'] == 'No') {
+              if ($account['Status'] == '0') {
                 array_push($errors, "Your account has not been activated by the admin!");
               } else {
                 header('Location: ./user/index.php');

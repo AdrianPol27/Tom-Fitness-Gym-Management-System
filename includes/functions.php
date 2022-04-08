@@ -27,7 +27,7 @@
     }
     
     function register($firstName, $lastName, $address, $mobileNumber, $sex, $age, $exerciseType, $username, $password) {
-      $result = mysqli_query($this->dbh, "INSERT INTO tbl_users (first_name, last_name, address, mobile_number, sex, age, exercise_type, username, password, Date_registered) VALUES ('$firstName','$lastName','$address','$mobileNumber','$sex','$age','$exerciseType','$username','$password','0000-00-00')");
+      $result = mysqli_query($this->dbh, "INSERT INTO tbl_users (first_name, last_name, address, mobile_number, sex, age, exercise_type, username, password, Date_activated, Status) VALUES ('$firstName','$lastName','$address','$mobileNumber','$sex','$age','$exerciseType','$username','$password','0000-00-00','0')");
       return $result;
     }
 
