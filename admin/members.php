@@ -2,8 +2,6 @@
 
 	include_once(".././includes/functions.php"); // Include functions.php
 	$functions = new Functions(); // Create function object
-	$errors = array();
-	$errorSuccess = array();
 
 	if (isset($_POST['activate_btn'])) { // Kung ang add member button tuplokon
 		$userId = $_POST['user_id'];
@@ -53,6 +51,9 @@
 							<li class="nav-item">
 								<a class="nav-link active" href="members.php">Members</a>
 							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="workouts.php">Workouts</a>
+							</li>
 						</ul>
 						<h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
 							<span>Account</span>
@@ -74,54 +75,57 @@
 					</div>
           <?php include('.././includes/errors.php'); ?>
 					<form action="members.php" method="post">
-						<table id="myTable">
-							<thead class="text-center">
-								<th>ID</th>
-								<th>Name</th>
-								<th>Address</th>
-								<th>Mobile Number</th>
-								<th>Sex</th>
-								<th>Age</th>
-								<th>Exercise Type</th>
-								<th>Date Activated</th>
-								<th>Activation</th>
-							</thead>
-							<tbody class="text-center">
-								<?php
-									$cnt = 1;
-									$fetchMembers = $functions->fetchMembers();
-									while($row = mysqli_fetch_array($fetchMembers)) {
-								?>
-								<tr>
-									<td><?= $cnt ?></td>
-									<td><?= $row['First_name'] . ' ' . $row['Last_name'] ?></td>
-									<td><?= $row['Address'] ?></td>
-									<td><?= $row['Mobile_number'] ?></td>
-									<td><?= $row['Sex'] ?></td>
-									<td><?= $row['Age']?></td>
-									<td><?= $row['Exercise_type'] ?></td>
-									<td><?= $row['Date_activated'] ?></td>
-									<td>
-										<?php 
-											if ($row['Status'] == '0') {
-												echo '<button type="submit" class="btn btn-primary btn-sm w-100" name="activate_btn">Activate</button>';
-											} 
-											if ($row['Status'] == '1') {
-												echo '<p class="text-success m-0">Activated</p>';
-											}
-											if ($row['Status'] == '2') {
-												echo '<p class="text-danger m-0">Expired</p>';
-											}
-										?>
-									</td>
-								</tr>
-							</tbody>
+						<div class="table-responsive">
+							<table id="myTable">
+								<thead class="text-center">
+									<th>ID</th>
+									<th>Name</th>
+									<th>Address</th>
+									<th>Mobile Number</th>
+									<th>Sex</th>
+									<th>Age</th>
+									<th>Exercise Type</th>
+									<th>Date Activated</th>
+									<th>Activation</th>
+								</thead>
+								<tbody>
+									<?php
+										$cnt = 1;
+										$fetchMembers = $functions->fetchMembers();
+										while($row = mysqli_fetch_array($fetchMembers)) {
+									?>
+									<tr class="text-center">
+										<td><?= $cnt ?></td>
+										<td><?= $row['First_name'] . ' ' . $row['Last_name'] ?></td>
+										<td><?= $row['Address'] ?></td>
+										<td><?= $row['Mobile_number'] ?></td>
+										<td><?= $row['Sex'] ?></td>
+										<td><?= $row['Age']?></td>
+										<td><?= $row['Exercise_type'] ?></td>
+										<td><?= $row['Date_activated'] ?></td>
+										<td>
+											<?php 
+												if ($row['Status'] == '0') {
+													echo '<button type="submit" class="btn btn-primary btn-sm w-100" name="activate_btn">Activate</button>';
+												} 
+												if ($row['Status'] == '1') {
+													echo '<p class="text-success m-0">Activated</p>';
+												}
+												if ($row['Status'] == '2') {
+													echo '<p class="text-danger m-0">Expired</p>';
+												}
+											?>
+										</td>
+									</tr>
 
-							<!-- Hidden Input -->
-							<input type="hidden" name="user_id" value="<?= $row['User_ID'] ?>">
+									<!-- Hidden Input -->
+									<input type="hidden" name="user_id" value="<?= $row['User_ID'] ?>">
 
-							<?php $cnt = $cnt + 1; }?>
-						</table>
+									<?php $cnt = $cnt + 1; }?>
+
+								</tbody>
+							</table>
+						</div>
 					</form>
 				</main>
 			</div>

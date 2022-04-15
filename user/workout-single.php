@@ -1,3 +1,12 @@
+<?php
+
+	include_once(".././includes/functions.php"); // Include functions.php
+	$functions = new Functions(); // Create function object
+
+	$workoutId = $_GET['Workout_ID'];
+	$workoutName = $_GET['Workout_name'];
+
+?>
 
 <!doctype html>
 <html lang="en">
@@ -26,13 +35,12 @@
 					<div class="position-sticky pt-3">
 						<ul class="nav flex-column">
 							<li class="nav-item">
-								<a class="nav-link active" href="index.php">Dashboard</a>
+								<a class="nav-link" href="index.php">Dashboard</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link" href="workouts.php">Workouts</a>
+								<a class="nav-link active" href="workouts.php">Workouts</a>
 							</li>
 						</ul>
-
 						<h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
 							<span>Account</span>
 						</h6>
@@ -48,12 +56,34 @@
 				</nav>
 
 				<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-					<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-						<h1>Dashboard</h1>
-					</div>
-          
-          
+	
+						<nav class="mt-3" aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="workouts.php">Workouts</a></li>
+								<li class="breadcrumb-item active" aria-current="page"><?= $workoutName ?></li>
+							</ol>
+						</nav>
+						<?php
+							$fetchWorkoutsById = $functions->fetchWorkoutsById($workoutId);
+							while($row = mysqli_fetch_array($fetchWorkoutsById)) {
+						?>
+							
+							<div class="col-lg-6">
+								<div class="card">
+									<div class="card-body">
+										<img src="<?= $row['Workout_image'] ?>" class="w-100" alt="<?= $row['Workout_name'] ?>">
+										<h3 class="my-2"><?= $row['Workout_name'] ?> (<?= $row['Difficulty'] ?>)</h3>
+										<p class="lead m-0"><?= $row['Category'] ?></p>
+										<p class="lead m-0"><?= $row['Workout_description'] ?></p>
+									</div>
+								</div>
+							</div>
+						<?php } ?>
+
+						
+	
 				</main>
+
 			</div>
 		</div>
     <?php include ('.././includes/scripts-file.php') ?>
