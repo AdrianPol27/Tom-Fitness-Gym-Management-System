@@ -49,7 +49,7 @@
 								</a>
 							</li>
 						</ul>
-					</div>
+					</div>z
 				</nav>
 
 				<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
@@ -72,7 +72,10 @@
 											</div>
 										</div>
 										<div class="card-body m-0 p-0">
-											<img src="<?= $row['Workout_image'] ?>" alt="<?= $row['Workout_name'] ?>" style="width: 100%; height: 120px;">
+											<video style="width: 100%; height: 120px;" controls>
+												<source src="<?= $row['Workout_image'] ?>" type="video/mp4">
+												Your browser does not support the video tag.
+											</video>
 										</div>
 										<div class="card-footer">
 											<div class="d-flex">
