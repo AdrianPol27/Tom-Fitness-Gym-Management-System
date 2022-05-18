@@ -12,7 +12,7 @@
 		$fileType = $_FILES['workout_image']['type'];
 		$fileExt = explode('.', $fileName);
 		$fileActualExt = strtolower(end($fileExt));
-		$allowed = array('jpg', 'jpeg', 'png');
+		$allowed = array('mp4');
 
     $workoutImage = $fileTmpName;
     $workoutName = $_POST['workout_name'];
